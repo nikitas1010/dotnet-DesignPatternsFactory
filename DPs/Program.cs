@@ -6,16 +6,36 @@ namespace DPs
     {
         public static void Main(string[] args)
         {
-            UserNameFactoryTest.TestUserNameFactory();
+            var username = new Username("Nikita", "Sinhal");
+            Console.WriteLine(username);
+            //Create a username simple factory that creates username. 
+            UsernameSimpleFactory usernameSimpleFactory = new UsernameSimpleFactory();
+            //Dependancy Inversion, so we can make changes to Simple factory and inject it from this part of the program
+            UserNameManager userNameManager = new UserNameManager(usernameSimpleFactory);
+
+            userNameManager.ManageUsername("Sinhal, Nikita");
+            userNameManager.ManageUsername(" Nikita Sinhal ");
+
+
         }
     }
+/*
+    UserNameManager can perform various tasks ralted to username. It may rely on factory to create the object,
+    write it to console or do other tasks like write to db.
 
-    //This is the client code, which calls the Simple Factory
-    class UserNameFactoryTest {
+    This is the client code, which calls the Simple Factory. This is the higher level code,
+    which should not depend on the lower level objects like factory and username, so we inject them as dependancy
+*/
+    class UserNameManager {
 
+        UsernameSimpleFactory usernameSimpleFactory = null;
 
+        public UserNameManager(UsernameSimpleFactory usernameSimpleFactory)
+        {
+            this.usernameSimpleFactory = usernameSimpleFactory;
+        }
 
-        public static void TestUserNameFactory()
+        public void ManageUsername(String name)
         {
 
             /*
@@ -23,15 +43,13 @@ namespace DPs
              2. Factory Method will determine order and return username object with first and last name
              3. We can write username object to Console, as it will have ToString method implemented
              */
-            var username = new Username("Nikita", "Sinhal");
-            Console.WriteLine(username);
 
-            UsernameSimpleFactory usernameSimpleFactory = new UsernameSimpleFactory();
-
-            var username2 = usernameSimpleFactory.GetUserNameObject("Sinhal, Nikita");
-            Console.WriteLine(username2);
-            var username3 = usernameSimpleFactory.GetUserNameObject(" Nikita Sinhal ");
-            Console.WriteLine(username3);
+            var username = this.usernameSimpleFactory.GetUserNameObject(name);
+            Console.WriteLine(username);           
+            
+        }
+        public void DoOtherUsernameTasks() {
+            Console.WriteLine("Adding Username to DB");
         }
     }
 
