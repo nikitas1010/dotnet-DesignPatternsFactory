@@ -6,17 +6,36 @@ namespace DPs
     {
         public static void Main(string[] args)
         {
-            UsernameTest();
+            //UsernameTest();
             // Dialog Client factory Method
-            new DialogClient().Main();
+            //new DialogClient().Main();
 
             //Command pattern test
-            CommandTest();
+            //CommandGenericTest();
 
+            RemoteControlTest();
 
         }
 
-        public static void CommandTest() {
+        public static void RemoteControlTest() {
+            //Invoker
+            SimpleRemoteControl remote = new SimpleRemoteControl();
+            //receiver
+            Light light = new Light();
+            //command
+            ILightCommand lightOn = new LightOnCommand(light);
+            remote.SetLightCommand(lightOn);
+            remote.PressButton();
+
+            ILightCommand lightOff = new LightOffCommand(light);
+            remote.SetLightCommand(lightOff);
+            remote.PressButton();
+
+
+        }
+    
+
+        public static void CommandGenericTest() {
             // The client code can parameterize an invoker with any commands.
             Invoker invoker = new Invoker();
             invoker.SetOnStart(new SimpleCommand("Say Hi!"));

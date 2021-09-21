@@ -37,6 +37,7 @@
     <Compile Include="Button.cs" />
     <Compile Include="DialogClient.cs" />
     <Compile Include="Command.cs" />
+    <Compile Include="Light.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
